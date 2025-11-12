@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tech3D Games Hub — 10 Playable 3D Games</title>
+  <meta name="description" content="Play 10 exciting 3D browser games built with Three.js and HTML5. Explore orbits, puzzles, shooters, racers, and more — all optimized for AdSense." />
+  <meta name="keywords" content="3D games, HTML5, WebGL, Three.js, online play, tech3d, browser games">
+  <link rel="icon" href="favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <style>
+    :root{--bg:#071026;--card:#0f1724;--muted:#9aa4b2;--accent1:#60a5fa;--accent2:#7c3aed}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;color:#eaf6ff;background:linear-gradient(180deg,#020317 0%,var(--bg) 100%);-webkit-font-smoothing:antialiased}
+    .wrap{max-width:1200px;margin:18px auto;padding:18px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+    .logo{display:flex;gap:12px;align-items:center}
+    .logo .box{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#021124}
+    h1{margin:0;font-size:22px}
+    p.lead{color:var(--muted);margin:6px 0 0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:18px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .thumb{height:220px;border-radius:10px;background:#021020;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+    .controls{display:flex;gap:8px;margin-top:8px}
+    .btn{padding:8px 10px;border-radius:8px;background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#021124;border:none;cursor:pointer;font-weight:700}
+    .small{padding:6px 8px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:var(--muted);font-weight:700}
+    .meta{color:var(--muted);font-size:13px;margin-top:8px}
+    .modal{position:fixed;inset:0;background:rgba(1,6,14,0.8);display:none;align-items:center;justify-content:center;z-index:999}
+    .modal.open{display:flex}
+    .player{width:94%;max-width:1100px;height:78vh;background:linear-gradient(180deg,#07102a,#031026);border-radius:12px;padding:12px;display:flex;flex-direction:column}
+    .player-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .iframe-wrap{flex:1;background:#000;border-radius:8px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="box">3D</div>
+        <div>
+          <h1>Tech3D — Playable Demos</h1>
+          <div class="lead">10 playable browser 3D games — optimized for AdSense & GitHub Pages.</div>
+        </div>
+      </div>
+      <div><button id="leaderboardBtn" class="btn">Leaderboard</button></div>
+    </header>
+
+    <section class="grid" id="gamesGrid">
+      <!-- Replace example.com links with your hosted URLs -->
+      <div class="card"><div style="font-weight:800">Voxel Farm</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game5-voxel-farm/">Play</button></div>
+      </div>
+
+      <div class="card"><div style="font-weight:800">Sky Architect</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game6-sky-architect/">Play</button></div>
+      </div>
+
+      <div class="card"><div style="font-weight:800">Echo Shooter</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game7-echo-shooter/">Play</button></div>
+      </div>
+
+      <div class="card"><div style="font-weight:800">Pulse Runner</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game8-pulse-runner/">Play</button></div>
+      </div>
+
+      <div class="card"><div style="font-weight:800">Mini Robo</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game9-mini-robo/">Play</button></div>
+      </div>
+
+      <div class="card"><div style="font-weight:800">Quantum Slide</div>
+        <div class="thumb">Playable on GitHub</div>
+        <div class="controls"><button class="btn" data-play="external" data-src="https://aliraza0b.github.io/tech3d-games/game10-quantum-slide/">Play</button></div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="player">
+      <div class="player-top">
+        <div id="playerTitle" style="font-weight:800">Game</div>
+        <button id="closeModal" class="btn">Close</button>
+      </div>
+      <div class="iframe-wrap" id="iframeWrap"><div style="color:#9aa4b2;font-weight:600;">🎮 Loading game...</div></div>
+    </div>
+  </div>
+
+  <script>
+    const modal=document.getElementById('modal');
+    const iframeWrap=document.getElementById('iframeWrap');
+    const playerTitle=document.getElementById('playerTitle');
+    const closeModal=document.getElementById('closeModal');
+    document.querySelectorAll('[data-play]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const src=btn.dataset.src;
+        playerTitle.textContent=btn.parentElement.parentElement.querySelector('div').textContent;
+        iframeWrap.innerHTML=`<iframe src="${src}" width="100%" height="100%" style="border:0" allowfullscreen></iframe>`;
+        modal.classList.add('open');
+      });
+    });
+    closeModal.addEventListener('click',()=>{modal.classList.remove('open');iframeWrap.innerHTML='';});
+  </script>
+</body>
+</html>
