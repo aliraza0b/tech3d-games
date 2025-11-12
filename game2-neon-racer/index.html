@@ -1,0 +1,41 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Neon Racer</title><style>
+body{margin:0;background:#071026;color:#eaf6ff;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
+.header{padding:10px;background:linear-gradient(90deg,#060b1a,#071026);display:flex;align-items:center;gap:12px}
+.header .title{font-weight:700}
+.container{padding:12px}
+.btn{padding:8px 10px;border-radius:8px;background:#60a5fa;color:#021124;border:none;cursor:pointer}
+.footer{position:fixed;right:12px;bottom:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:13px;color:#9aa4b2}
+canvas, #game{width:100%;height:100%;display:block}
+.demo-wrap{width:100%;height:420px;border-radius:8px;overflow:hidden;background:#001022;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<div class="header"><div class="title">Neon Racer</div><div style="margin-left:auto">Use ← →</div></div>
+<div class="container"><div class="demo-wrap"><canvas id="rCanvas" style="width:100%;height:100%"></canvas></div></div>
+<div class="footer">Use Left / Right arrow keys to move lanes.</div>
+<script>
+const canvas = document.getElementById('rCanvas');
+function fit(){ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; }
+fit();
+let lanes = 3; let player = 1; let obstacles = []; let speed=3; let score=0; let running=true;
+function spawn(){ if(Math.random()<0.03) obstacles.push({lane:Math.floor(Math.random()*lanes), z:100}); }
+function update(){
+  for(let o of obstacles) o.z -= speed;
+  obstacles = obstacles.filter(o=>o.z>-40);
+  // collision check
+  for(let o of obstacles) if(o.z<12 && o.z>-8 && o.lane===player){ running=false; alert('Game over. Score: '+score); }
+}
+function render(){
+  const ctx = canvas.getContext('2d'); const w=canvas.width, h=canvas.height;
+  ctx.fillStyle='#021226'; ctx.fillRect(0,0,w,h);
+  const laneW = w/6; const cx = w/2;
+  for(let i=0;i<lanes;i++){ const x = cx + (i-(lanes-1)/2)*laneW; ctx.fillStyle='rgba(255,255,255,0.02)'; ctx.fillRect(x-laneW/2, h*0.2, laneW*0.9, h*0.65); }
+  // player
+  ctx.fillStyle='#60a5fa'; const px = cx + (player-(lanes-1)/2)*laneW; ctx.fillRect(px-22, h*0.7, 44, 28);
+  // obstacles
+  ctx.fillStyle='#fb7185'; for(let o of obstacles){ const ox = cx + (o.lane-(lanes-1)/2)*laneW; const sy = h*0.2 + (1 - (o.z+100)/140)*h*0.65; ctx.fillRect(ox-18, sy, 36, 26); }
+  ctx.fillStyle='#9aa4b2'; ctx.font='16px Inter'; ctx.fillText('Score: '+score,12,24);
+}
+(function loop(){ if(!running) return; if(Math.random()<0.03) spawn(); update(); score++; render(); requestAnimationFrame(loop); })();
+window.addEventListener('keydown',(e)=>{ if(e.key==='ArrowLeft') player = Math.max(0, player-1); if(e.key==='ArrowRight') player = Math.min(lanes-1, player+1); });
+window.addEventListener('resize', fit);
+</script>
+</body></html>

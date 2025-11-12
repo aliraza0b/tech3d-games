@@ -1,0 +1,29 @@
+<!doctype html><html lang='en'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Cube Shooter</title><style>
+body{margin:0;background:#071026;color:#eaf6ff;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
+.header{padding:10px;background:linear-gradient(90deg,#060b1a,#071026);display:flex;align-items:center;gap:12px}
+.header .title{font-weight:700}
+.container{padding:12px}
+.btn{padding:8px 10px;border-radius:8px;background:#60a5fa;color:#021124;border:none;cursor:pointer}
+.footer{position:fixed;right:12px;bottom:12px;padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.03);font-size:13px;color:#9aa4b2}
+canvas, #game{width:100%;height:100%;display:block}
+.demo-wrap{width:100%;height:420px;border-radius:8px;overflow:hidden;background:#001022;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<div class="header"><div class="title">Cube Shooter</div><div style="margin-left:auto">Click targets</div></div>
+<div class="container"><div class="demo-wrap" id="g"></div></div>
+<div class="footer">Click rotating cubes to score points.</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script>
+(function(){
+  const container = document.getElementById('g');
+  const scene = new THREE.Scene(); const camera = new THREE.PerspectiveCamera(50, container.clientWidth/container.clientHeight,0.1,1000);
+  const renderer = new THREE.WebGLRenderer({antialias:true,alpha:true}); renderer.setSize(container.clientWidth, container.clientHeight); container.appendChild(renderer.domElement);
+  camera.position.z=6; const light = new THREE.AmbientLight(0xffffff,1); scene.add(light);
+  let targets=[]; for(let i=0;i<7;i++){ const g=new THREE.BoxGeometry(0.6,0.6,0.6); const m=new THREE.MeshStandardMaterial({color: new THREE.Color(Math.random(),Math.random(),Math.random())}); const cube=new THREE.Mesh(g,m); cube.position.set((Math.random()-0.5)*4,(Math.random()-0.5)*2,(Math.random()-0.5)*2); scene.add(cube); targets.push(cube); }
+  const ray = new THREE.Raycaster(); const mouse = new THREE.Vector2(); let score=0;
+  renderer.domElement.addEventListener('pointerdown',(e)=>{ const rect = renderer.domElement.getBoundingClientRect(); mouse.x = ((e.clientX-rect.left)/rect.width)*2-1; mouse.y = -((e.clientY-rect.top)/rect.height)*2+1; ray.setFromCamera(mouse,camera); const ints=ray.intersectObjects(targets); if(ints.length>0){ const hit=ints[0].object; scene.remove(hit); targets.splice(targets.indexOf(hit),1); score+=10; document.title='Score: '+score; } });
+  function anim(){ requestAnimationFrame(anim); targets.forEach(t=>{ t.rotation.x+=0.02; t.rotation.y+=0.03; }); renderer.render(scene,camera); }
+  anim();
+  window.addEventListener('resize', ()=>{ renderer.setSize(container.clientWidth, container.clientHeight); camera.aspect = container.clientWidth/container.clientHeight; camera.updateProjectionMatrix(); });
+})();
+</script>
+</body></html>
